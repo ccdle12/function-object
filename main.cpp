@@ -13,6 +13,11 @@ template <typename R, typename... Args>
 class function<R(Args...)>
 {
     public:
+        function() = default;
+
+        template <typename T>
+        function(T t) : m_callable{std::make_unique<Callable<T>>(t)} {};
+
         // Move assignment overload, copy or move the function and wrap it as a Callable
         // class.
         // T is the callable function as a generic, allowing different types to
@@ -93,8 +98,7 @@ void incrementer(int& x)
 
 int main() 
 {
-    example::function<int(int, int)> f;
-    f = add;
+    example::function<int(int, int)> f(add);
     f(1, 2);
 
     example::function<void()> f2;
